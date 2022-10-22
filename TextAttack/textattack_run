@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 import sys
-sys.path.insert(0, '/root/seongae/SeniorProject_NLPAttack/TextAttack')
+sys.path.insert(0, '/root/seongae/TextAttack_copy/NLP_Project/TextAttack')
 sys.path.insert(1, '/usr/local/lib/python3.8/site-packages')
 from textattack.commands.textattack_cli import main
 if __name__ == '__main__':
