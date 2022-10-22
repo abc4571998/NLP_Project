@@ -20,7 +20,7 @@ class BeamSearch(SearchMethod):
         beam_width (int): the number of candidates to retain at each step
     """
 
-    def __init__(self, beam_width=8):
+    def __init__(self, beam_width=5):
         self.beam_width = beam_width
 
     def perform_search(self, initial_result):

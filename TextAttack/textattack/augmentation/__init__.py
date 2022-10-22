@@ -9,12 +9,12 @@ Transformations and constraints can be used outside of an attack for simple NLP 
 
 from .augmenter import Augmenter
 from .recipes import (
-    # WordNetAugmenter,
-    # EmbeddingAugmenter,
-    # CharSwapAugmenter,
-    # EasyDataAugmenter,
-    # CheckListAugmenter,
-    # DeletionAugmenter,
+    WordNetAugmenter,
+    EmbeddingAugmenter,
+    CharSwapAugmenter,
+    EasyDataAugmenter,
+    CheckListAugmenter,
+    DeletionAugmenter,
     CLAREAugmenter,
-    # BackTranslationAugmenter,
+    BackTranslationAugmenter,
 )

@@ -16,6 +16,7 @@ from textattack.constraints.pre_transformation import (
 from textattack.constraints.semantics.sentence_encoders import UniversalSentenceEncoder
 from textattack.goal_functions import UntargetedClassification
 from textattack.search_methods import GreedySearch
+from textattack.search_methods import BeamSearch
 from textattack.transformations import (
     CompositeTransformation,
     WordInsertionMaskedLM,
@@ -115,6 +116,7 @@ class CLARE2020(AttackRecipe):
         # is reached.
         #  Each step selects the highest-scoring action from the remaining ones."
         #
-        search_method = GreedySearch()
+        #search_method = GreedySearch()
+        search_method = BeamSearch()
 
         return Attack(goal_function, constraints, transformation, search_method)

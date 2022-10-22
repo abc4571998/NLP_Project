@@ -20,5 +20,4 @@ class WordDeletion(Transformation):
         if len(current_text.words) > 1:
             for i in indices_to_modify:
                 transformed_texts.append(current_text.delete_word_at_index(i))
-                print(i)
         return transformed_texts

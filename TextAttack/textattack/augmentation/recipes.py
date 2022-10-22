@@ -111,7 +111,7 @@ class DeletionAugmenter(Augmenter):
 
 class EmbeddingAugmenter(Augmenter):
     """Augments text by transforming words with their embeddings."""
-
+    print("*******this is Embedding")
     def __init__(self, **kwargs):
         from textattack.transformations import WordSwapEmbedding
 
