@@ -11,6 +11,7 @@ from .word_deletion import WordDeletion
 class WordDeletionMaskedLM(WordDeletion):
     def __init__(
         self,
+        method="bae",
         masked_language_model="bert-base-uncased",
         tokenizer=None,
         max_length=512,
@@ -18,8 +19,10 @@ class WordDeletionMaskedLM(WordDeletion):
         max_candidates=50,
         min_confidence=5e-4,
         batch_size=16,
+        **kwargs,
     ):
-        super().__init__()
+        super().__init__(**kwargs)
+        self.method = method
         self.max_length = max_length
         self.window_size = window_size
         self.max_candidates = max_candidates
@@ -52,7 +55,7 @@ class WordDeletionMaskedLM(WordDeletion):
             padding="max_length",
             return_tensors="pt",
         )
-        return {k: v.to(utils.device) for k, v in encoding.items()}
+        return encoding.to(utils.device)
 
     def _get_transformations(self, current_text, indices_to_modify):
         transformed_texts = []

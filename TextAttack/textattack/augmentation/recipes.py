@@ -12,7 +12,8 @@ from textattack.constraints.pre_transformation import (
     StopwordModification,
 )
 from textattack.constraints.semantics.sentence_encoders import UniversalSentenceEncoder
-
+from textattack.constraints.grammaticality.cola import COLA
+from textattack.constraints.grammaticality.language_tool import LanguageTool
 from . import Augmenter
 
 DEFAULT_CONSTRAINTS = [RepeatModification(), StopwordModification()]
@@ -215,6 +216,7 @@ class CLAREAugmenter(Augmenter):
         shared_masked_lm = transformers.AutoModelForCausalLM.from_pretrained(model)
         shared_tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer)
         transformation = WordDeletion()
+
         # transformation = CompositeTransformation(
         #     [
         #         WordSwapMaskedLM(
@@ -248,8 +250,8 @@ class CLAREAugmenter(Augmenter):
         #     skip_text_shorter_than_window=True,
         # )
 
-        # constraints = DEFAULT_CONSTRAINTS + [use_constraint]
-        constraints = [DEFAULT_CONSTRAINTS[0]]
+        constraints = DEFAULT_CONSTRAINTS + [LanguageTool(grammar_error_threshold=0, compare_against_original=True, language='en-US')]
+        #constraints = [DEFAULT_CONSTRAINTS[0]]
 
         super().__init__(transformation, constraints=constraints, **kwargs)
 
