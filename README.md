@@ -2,6 +2,7 @@
 
 ## 1. Augment - Word deletion
 ### Method 1 : Command line
+* Delete word randomly
 * **`cd Textattack`**
 * **_`./textattack_run augment --recipe clare --pct-words-to-swap .1 --transformations-per-example 5 --exclude-original --input-csv ./inputs/my_input.csv --output-csv ./inputs/outputs/word_delete_output.csv --overwrite --input-column /text/`_**
   
@@ -31,6 +32,16 @@
   <img width="469" alt="image" src="https://user-images.githubusercontent.com/30529101/196148343-efaaef4f-f6e6-45c0-be13-bfbe43dc494d.png">  
 
 
+## 2. Augment - Word deletion with Grammar checking
+* The previous 'word_deletion' method randomly deletes a word.
+* Deleting important words, such as subjects or verbs, results in incorrect grammar of the sentence.
+* So I added the grammar check function to the word_deletion as a grammar check.
+* Gramformer resolves errors by changing the word sequence or inserting words, but has problems performing word_deletion.
+* If the verb is deleted and a grammatical error occurs, the gramformer inserts the verb. It looks like word_insertion.
+* I wanted to delete grammatically, so I added a function to make good sentences without deleting the subject and verb.
+  <img width="731" alt="image" src="https://user-images.githubusercontent.com/30529101/197599028-5b195e79-d5c9-4255-af0b-0713b959b126.png">
+  <img width="644" alt="image" src="https://user-images.githubusercontent.com/30529101/197599177-7cad64bf-1e27-4d6e-b8b7-00de6e3d8344.png">
+
 
 ## TextAttack End-to-End : with Word Deletion
 ### Training : First, train model
@@ -43,12 +54,17 @@
   
     + **[`--model distilbert-base-uncased`]** : Using distilbert, uncased version, from `transformers`
     + **[`--dataset rotten_tomatoes`]** : On the Rotten Tomatoes dataset
-    + **[`--model-num-labels 2`]** : has 2 labels
-    + **[`--model-max-length 64`]** : With a maximum sequence length of 64
+    + **[`--model-num-labels 2`]** : has 2 labels (0 or 1)
+    + **[`--model-max-length 64`]** : With a maximum sequence length of 64 (The longest input is 51 words, so we can cap our maximum sequence length (--model-max-length) at 64)
     + **[` --per-device-train-batch-size 128`]** : Batch size of 128
     + **[`--num-epochs 3`]** : 3 epochs
     
     <img width="1379" alt="image" src="https://user-images.githubusercontent.com/30529101/196363624-a704005c-6cea-4adf-bb14-2cbf307c2635.png">
+
+  + **_`./textattack_run train --model-name-or-path distilbert-base-uncased --dataset rotten_tomatoes --model-num-labels 2 --model-max-length 64 --per-device-train-batch-size 128 --num-epochs 5`_**
+    + + **[`--num-epochs 5`]** : 5 epochs
+      <img width="739" alt="image" src="https://user-images.githubusercontent.com/30529101/197519659-92860878-2c9c-460c-8249-4107e647b3c8.png">
+      <img width="855" alt="image" src="https://user-images.githubusercontent.com/30529101/197520165-f001c204-4cde-46da-8b2f-588252ba7734.png">
 
     
 ### Evaluation
@@ -58,6 +74,10 @@
   
     + **[`--model ./outputs/2022-10-18-15-51-52-377473/best_model/`]** : Trained model (In previous `train` step)
     <img width="572" alt="image" src="https://user-images.githubusercontent.com/30529101/196363911-b5860d21-3f8c-4c9a-9ad3-057c922b1b1d.png">
+
+  
+  + **_`./textattack_run eval --num-examples 1000 --model ./outputs/2022-10-24-20-52-58-294706/best_model/ --dataset-from-huggingface rotten_tomatoes --dataset-split test`_**  
+    <img width="601" alt="image" src="https://user-images.githubusercontent.com/30529101/197520923-90749f0a-33f6-4e51-9b99-f434d3832f35.png">
 
 
 ### Attack
@@ -69,6 +89,9 @@
     + Our model was 83% successful, and attack 83 examples (since the attack won't run if an example is originally mispredicted)
     + Attack success rate is 98.8% that means **clare** failed to find an adversarial example only 1.2% of the time
     
+  + **_`./textattack_run attack --recipe clare --num-examples 100 --model ./outputs/2022-10-24-20-52-58-294706/best_model/ --dataset-from-huggingface rotten_tomatoes --dataset-split test`_**
+    <img width="380" alt="image" src="https://user-images.githubusercontent.com/30529101/197522184-d63a4886-e909-4cb2-a860-07ef9eb4d639.png">
+
     
 ----
 
