@@ -116,7 +116,7 @@ class CLARE2020(AttackRecipe):
         # is reached.
         #  Each step selects the highest-scoring action from the remaining ones."
         #
-        #search_method = GreedySearch()
-        search_method = BeamSearch()
+        search_method = GreedySearch()
+        # search_method = BeamSearch()
 
         return Attack(goal_function, constraints, transformation, search_method)

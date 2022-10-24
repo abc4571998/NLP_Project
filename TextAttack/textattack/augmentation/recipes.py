@@ -189,17 +189,7 @@ class CheckListAugmenter(Augmenter):
 
 
 class CLAREAugmenter(Augmenter):
-    """Li, Zhang, Peng, Chen, Brockett, Sun, Dolan.
-
-    "Contextualized Perturbation for Textual Adversarial Attack" (Li et al., 2020)
-
-    https://arxiv.org/abs/2009.07502
-
-    CLARE builds on a pre-trained masked language model and modifies the inputs in a contextaware manner.
-    We propose three contextualized perturbations, Replace, Insert and Merge, allowing for generating outputs
-    of varied lengths.
-    """
-    print("*******this is clare")
+    print("*******this is clare in seongae")
     def __init__(
         self, model="distilroberta-base", tokenizer="distilroberta-base", **kwargs
     ):
@@ -210,7 +200,7 @@ class CLAREAugmenter(Augmenter):
             # WordInsertionMaskedLM,
             # WordMergeMaskedLM,
             # WordSwapMaskedLM,
-            WordDeletion
+            WordDeletion,
         )
 
         shared_masked_lm = transformers.AutoModelForCausalLM.from_pretrained(model)
@@ -250,8 +240,8 @@ class CLAREAugmenter(Augmenter):
         #     skip_text_shorter_than_window=True,
         # )
 
-        constraints = DEFAULT_CONSTRAINTS + [LanguageTool(grammar_error_threshold=0, compare_against_original=True, language='en-US')]
-        #constraints = [DEFAULT_CONSTRAINTS[0]]
+        #constraints = DEFAULT_CONSTRAINTS + [NamedEntityConstraint(False)]
+        constraints = DEFAULT_CONSTRAINTS
 
         super().__init__(transformation, constraints=constraints, **kwargs)
 
