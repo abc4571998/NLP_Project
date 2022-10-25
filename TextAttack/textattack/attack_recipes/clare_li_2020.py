@@ -22,7 +22,6 @@ from textattack.transformations import (
     WordInsertionMaskedLM,
     WordMergeMaskedLM,
     WordSwapMaskedLM,
-    WordDeletionMaskedLM,
     WordDeletion
 )
 
@@ -58,41 +57,35 @@ class CLARE2020(AttackRecipe):
         shared_tokenizer = transformers.AutoTokenizer.from_pretrained(
             "distilroberta-base"
         )
-        transformation = WordDeletion()
-        # transformation = CompositeTransformation(
-        #     [
-        #         WordSwapMaskedLM(
-        #             method="bae",
-        #             masked_language_model=shared_masked_lm,
-        #             tokenizer=shared_tokenizer,
-        #             max_candidates=50,
-        #             min_confidence=5e-4,
-        #         ),
-        #         WordInsertionMaskedLM(
-        #             masked_language_model=shared_masked_lm,
-        #             tokenizer=shared_tokenizer,
-        #             max_candidates=50,
-        #             min_confidence=0.0,
-        #         ),
-        #         WordMergeMaskedLM(
-        #             masked_language_model=shared_masked_lm,
-        #             tokenizer=shared_tokenizer,
-        #             max_candidates=50,
-        #             min_confidence=5e-3,
-        #         ),
-        #         WordDeletion()
-        #     ]
-        #)
+       
+        transformation = CompositeTransformation(
+            [
+                WordSwapMaskedLM(
+                    method="bae",
+                    masked_language_model=shared_masked_lm,
+                    tokenizer=shared_tokenizer,
+                    max_candidates=50,
+                    min_confidence=5e-4,
+                ),
+                # WordInsertionMaskedLM(
+                #     masked_language_model=shared_masked_lm,
+                #     tokenizer=shared_tokenizer,
+                #     max_candidates=50,
+                #     min_confidence=0.0,
+                # ),
+                # WordMergeMaskedLM(
+                #     masked_language_model=shared_masked_lm,
+                #     tokenizer=shared_tokenizer,
+                #     max_candidates=50,
+                #     min_confidence=5e-3,
+                # )
+                WordDeletion()
+            ]
+        )
 
-        #
         # Don't modify the same word twice or stopwords.
-        #
         constraints = [RepeatModification(), StopwordModification()]
 
-        # "A  common  choice  of sim(·,·) is to encode sentences using neural networks,
-        # and calculate their cosine similarity in the embedding space (Jin et al., 2020)."
-        # The original implementation uses similarity of 0.7.
-        
         
         # use_constraint = UniversalSentenceEncoder(
         #     threshold=0.7,
@@ -106,16 +99,6 @@ class CLARE2020(AttackRecipe):
         # Goal is untargeted classification.
         # "The score is then the negative probability of predicting the gold label from f, using [x_{adv}] as the input"
         goal_function = UntargetedClassification(model_wrapper)
-
-        # "To achieve this,  we iteratively apply the actions,
-        #  and first select those minimizing the probability of outputting the gold label y from f."
-        #
-        # "Only one of the three actions can be applied at each position, and we select the one with the highest score."
-        #
-        # "Actions are iteratively applied to the input, until an adversarial example is found or a limit of actions T
-        # is reached.
-        #  Each step selects the highest-scoring action from the remaining ones."
-        #
         search_method = GreedySearch()
         # search_method = BeamSearch()
 

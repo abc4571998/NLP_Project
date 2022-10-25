@@ -196,32 +196,31 @@ class CLAREAugmenter(Augmenter):
         import transformers
 
         from textattack.transformations import (
-            # CompositeTransformation,
-            # WordInsertionMaskedLM,
-            # WordMergeMaskedLM,
-            # WordSwapMaskedLM,
-            WordDeletion,
+            CompositeTransformation,
+            WordInsertionMaskedLM,
+            WordMergeMaskedLM,
+            WordSwapMaskedLM,
+            
         )
 
         shared_masked_lm = transformers.AutoModelForCausalLM.from_pretrained(model)
         shared_tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer)
-        transformation = WordDeletion()
 
-        # transformation = CompositeTransformation(
-        #     [
-        #         WordSwapMaskedLM(
-        #             method="bae",
-        #             masked_language_model=shared_masked_lm,
-        #             tokenizer=shared_tokenizer,
-        #             max_candidates=50,
-        #             min_confidence=5e-4,
-        #         ),
-        #         WordInsertionMaskedLM(
-        #             masked_language_model=shared_masked_lm,
-        #             tokenizer=shared_tokenizer,
-        #             max_candidates=50,
-        #             min_confidence=0.0,
-        #         ),
+        transformation = CompositeTransformation(
+            [
+                WordSwapMaskedLM(
+                    method="bae",
+                    masked_language_model=shared_masked_lm,
+                    tokenizer=shared_tokenizer,
+                    max_candidates=50,
+                    min_confidence=5e-4,
+                ),
+                WordInsertionMaskedLM(
+                    masked_language_model=shared_masked_lm,
+                    tokenizer=shared_tokenizer,
+                    max_candidates=50,
+                    min_confidence=0.0,
+                )])
         #         WordMergeMaskedLM(
         #             masked_language_model=shared_masked_lm,
         #             tokenizer=shared_tokenizer,
@@ -232,16 +231,16 @@ class CLAREAugmenter(Augmenter):
         #     ]
         # )
         print("******print transformation", transformation)
-        # use_constraint = UniversalSentenceEncoder(
-        #     threshold=0.7,
-        #     metric="cosine",
-        #     compare_against_original=True,
-        #     window_size=15,
-        #     skip_text_shorter_than_window=True,
-        # )
+        use_constraint = UniversalSentenceEncoder(
+            threshold=0.7,
+            metric="cosine",
+            compare_against_original=True,
+            window_size=15,
+            skip_text_shorter_than_window=True,
+        )
 
-        #constraints = DEFAULT_CONSTRAINTS + [NamedEntityConstraint(False)]
-        constraints = DEFAULT_CONSTRAINTS
+        constraints = DEFAULT_CONSTRAINTS + [use_constraint]
+        # constraints = DEFAULT_CONSTRAINTS
 
         super().__init__(transformation, constraints=constraints, **kwargs)
 
