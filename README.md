@@ -92,7 +92,17 @@
   + **_`./textattack_run attack --recipe clare --num-examples 100 --model ./outputs/2022-10-24-20-52-58-294706/best_model/ --dataset-from-huggingface rotten_tomatoes --dataset-split test`_**
     <img width="380" alt="image" src="https://user-images.githubusercontent.com/30529101/197522184-d63a4886-e909-4cb2-a860-07ef9eb4d639.png">
 
-    
+
+  + **_`./textattack_run attack --recipe clare --num-examples 100 --model ./outputs/2022-10-24-20-52-58-294706/best_model/ --dataset-from-huggingface rotten_tomatoes --dataset-split test`_**
+    <img width="378" alt="image" src="https://user-images.githubusercontent.com/30529101/197606094-6b6f4976-e628-4ca5-b1e2-d1034873f882.png">
+    <img width="392" alt="image" src="https://user-images.githubusercontent.com/30529101/197609622-e5667ef6-fbdf-4a3b-8891-ee6022469397.png">
+
+
+    <img width="392" alt="image" src="https://user-images.githubusercontent.com/30529101/197652843-97cda2f9-4752-49f1-bcc8-294eb128f3ff.png">
+
+    <img width="388" alt="image" src="https://user-images.githubusercontent.com/30529101/197665638-fb5d77da-ed35-4f5f-8c4b-52182019ab3e.png">
+
+
 ----
 
 
