@@ -6,6 +6,9 @@ word deletion Transformation
 
 from .transformation import Transformation
 from gramformer import Gramformer
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
+from textattack.shared import AttackedText
 import nltk
 import functools
 
@@ -21,31 +24,35 @@ class WordDeletion(Transformation):
         transformed_texts = []
         gf = Gramformer(models=1)
         grammar_texts = []
-  
-        if len(current_text.words) > 1:
-            for i in indices_to_modify:
-                transformed_texts.append(current_text.delete_word_at_index(i))
-                new_sentence = str(current_text.delete_word_at_index(i))[16:-5] + "."
-                grammar_sentence =list( gf.correct(new_sentence, max_candidates=1))[0]
-                # if  new_sentence == grammar_sentence:
-                #     grammar_texts.append(grammar_sentence.lower())
-                # else:
-                #     grammar_texts.append('')
-                grammar_texts.append(grammar_sentence.lower())
+        answer = []
+        print(current_text)
+        grammar_texts.append(str(current_text)[15:-3])
+        if len(current_text.words) > 1: 
+            for i in indices_to_modify: #문장에서 한 단어씩 빼보기 
+                # transformed_texts.append(current_text.delete_word_at_index(i)) #단어 뺐을 때 문장을 저장하기
+                new_sentence = str(current_text.delete_word_at_index(i))[15:-3] #+ "." 
+                grammar_sentence =list( gf.correct(new_sentence, max_candidates=1))[0] #그래머 체크, 결과 하나만 나오게 
+                if grammar_sentence not in grammar_texts:
+                    grammar_texts.append(grammar_sentence.lower()) #오류를 수정한 문장
+            # print(grammar_texts)
             answer = [] 
             for index, item in enumerate(grammar_texts):
-                entities = get_entities(item)
-                check_subject, check_verb = False, False
-                for idx, entity in enumerate(entities):
-                    if entity[1] in ['NNP', 'NE', 'PRP', 'NNS', 'NN', 'NP', 'JJ']:
-                        check_subject = True
-                   
-                    if check_subject == True and entity[1] in ['VBP', 'VB', 'VBD', 'PRP', 'VBZ']:
-                         check_verb = True
+                tokenized_sentence = word_tokenize(item)
+                pos = pos_tag(tokenized_sentence)
+
+                for token in pos:
+                    if token[0] == "n't" or token[0] == "not":
+                        del tokenized_sentence[tokenized_sentence.index(token[0])]
+                        continue
                     
-                if check_subject and check_verb:
-                    # print(transformed_texts[index])
-                    answer.append(transformed_texts[index])
-        print("answer", answer)
+                    elif token[1] == "JJ" or token[1] == "RB" or token[1] == "DT" or token[1] == "CC":
+                        del tokenized_sentence[tokenized_sentence.index(token[0])]
+                        continue
+                new = ' '.join(s for s in tokenized_sentence)
+                # print("token sentence", tokenized_sentence)
+                new_grammmar =list( gf.correct(new, max_candidates=1))[0]
+                # print("new grammar", new_grammmar)
+                answer.append(AttackedText(new_grammmar))
+                
+        # print(answer)
         return answer
-    

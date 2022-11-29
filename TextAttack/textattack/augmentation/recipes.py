@@ -200,27 +200,28 @@ class CLAREAugmenter(Augmenter):
             WordInsertionMaskedLM,
             WordMergeMaskedLM,
             WordSwapMaskedLM,
-            
+            WordDeletion
         )
 
         shared_masked_lm = transformers.AutoModelForCausalLM.from_pretrained(model)
         shared_tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer)
 
-        transformation = CompositeTransformation(
-            [
-                WordSwapMaskedLM(
-                    method="bae",
-                    masked_language_model=shared_masked_lm,
-                    tokenizer=shared_tokenizer,
-                    max_candidates=50,
-                    min_confidence=5e-4,
-                ),
-                WordInsertionMaskedLM(
-                    masked_language_model=shared_masked_lm,
-                    tokenizer=shared_tokenizer,
-                    max_candidates=50,
-                    min_confidence=0.0,
-                )])
+        transformation = WordDeletion()
+        # transformation = CompositeTransformation(
+        #     [
+        #         WordSwapMaskedLM(
+        #             method="bae",
+        #             masked_language_model=shared_masked_lm,
+        #             tokenizer=shared_tokenizer,
+        #             max_candidates=50,
+        #             min_confidence=5e-4,
+        #         ),
+        #         WordInsertionMaskedLM(
+        #             masked_language_model=shared_masked_lm,
+        #             tokenizer=shared_tokenizer,
+        #             max_candidates=50,
+        #             min_confidence=0.0,
+        #         )])
         #         WordMergeMaskedLM(
         #             masked_language_model=shared_masked_lm,
         #             tokenizer=shared_tokenizer,
