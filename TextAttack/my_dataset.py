@@ -1,7 +1,7 @@
 import textattack
 dataset = [("We enjoyed the movie a lot!", 1), 
            ("films adapted from comic books have had plenty of success , whether they're about superheroes ( batman , superman , spawn ) , or geared toward kids ( casper ) or the arthouse crowd ( ghost world ) , but there's never really been a comic book like from hell before . ", 1),
-            ("for starters , it was created by alan moore ( and eddie campbell ) , who brought the medium to a whole new level in the mid '80s with a 12-part series called the watchmen .", 1 ),
+            ("for starters , it was created by alan moore , who brought the medium to a whole new level in the mid '80s with a 12-part series called the watchmen .", 1 ),
             ("all of this , of course , leads up to the predictable climax . ", 1), 
             ("I do not watch this movie again. ",0),
             ("Never go see the terrible movie .",0),
@@ -12,6 +12,23 @@ dataset = [("We enjoyed the movie a lot!", 1),
            ("avoid this film at all costs ." ,0),
            ("problems are solved when the obstacle is removed . " ,0),
            ("it's the cinematic equivalent to a good read , novelistic in its approach with themes rarely found in american movies . " ,1),
-           ("every now and again it's fun to watch a really bad movie . " , 1)
+           ("every now and again it's fun to watch a really bad movie . " , 1),
+           ("if you can imagine that , then you've basically got jerry fletcher . ", 1),
+           ("in many ways , i was surprised by this movie .", 1),
+           ("i am nearly positive everyone should enjoy this film , especially if you are into an action-thriller with witty dialogue and numerous suspenseful situations . ", 1),
+           ("there's an instance of this earlier in the film too that's disappointing . ",1),
+           ("it's comes when maximus escapes his executioners .",1),
+           ("reed's death presented the filmmakers with an obvious problem , as he still had scenes to be completed .", 1),
+           ("truman burbank is the perfect name for jim carrey's character in this film .", 1),
+            ("president truman was an unassuming man who became known worldwide , in spite of his stature . ", 1),
+            ("It was not good to see .", 0),
+            ("the next day during the drive to work , the radio jams and he starts picking up a voice that exactly describes his movements . ", 1),
+            ("he is so distracted that he nearly hits a pedestrian . ", 1),
+            ("It make me angry .", 0),
+            ("I think it is very good movie for children .", 1),
+            ("but on its own terms , the movie is well made .", 1 ),
+            ("sight , sound and pacing are all handled competently .", 1),
+            ("the first one is quite good , a decent introduction into the lives of these men . ", 1),
+            ("the last sequence is atrocious . ", 1)
            ]
 dataset = textattack.datasets.Dataset(dataset)
