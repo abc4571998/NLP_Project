@@ -67,19 +67,19 @@ class CLARE2020(AttackRecipe):
                     max_candidates=50,
                     min_confidence=5e-4,
                 ),
-                # WordInsertionMaskedLM(
-                #     masked_language_model=shared_masked_lm,
-                #     tokenizer=shared_tokenizer,
-                #     max_candidates=50,
-                #     min_confidence=0.0,
-                # ),
-                # WordMergeMaskedLM(
-                #     masked_language_model=shared_masked_lm,
-                #     tokenizer=shared_tokenizer,
-                #     max_candidates=50,
-                #     min_confidence=5e-3,
-                # )
-                WordDeletion()
+                WordInsertionMaskedLM(
+                    masked_language_model=shared_masked_lm,
+                    tokenizer=shared_tokenizer,
+                    max_candidates=50,
+                    min_confidence=0.0,
+                ),
+                WordMergeMaskedLM(
+                    masked_language_model=shared_masked_lm,
+                    tokenizer=shared_tokenizer,
+                    max_candidates=50,
+                    min_confidence=5e-3,
+                )
+                # WordDeletion()
             ]
         )
 
